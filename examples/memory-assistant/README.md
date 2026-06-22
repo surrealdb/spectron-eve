@@ -1,18 +1,18 @@
-# Memory assistant — `@surrealdb/spectron-eve` example
+# Memory assistant: `@surrealdb/spectron-eve` example
 
 A complete, runnable [Eve](https://eve.dev) agent that remembers users across
 sessions and channels, powered by [Spectron](https://surrealdb.com/platform/spectron).
 
 It wires up both layers of the adapter:
 
-- **Auto-memory** — [`agent/instructions/memory.ts`](./agent/instructions/memory.ts) recalls relevant memory each turn and injects it; [`agent/hooks/memory.ts`](./agent/hooks/memory.ts) persists the conversation back to Spectron with provenance.
-- **Tool pack** — [`agent/tools/`](./agent/tools) exposes `recall`, `remember`, `forget`, `entities`, and `timeline` for explicit use by the model.
+- **Auto-memory**: [`agent/instructions/memory.ts`](./agent/instructions/memory.ts) recalls relevant memory each turn and injects it; [`agent/hooks/memory.ts`](./agent/hooks/memory.ts) persists the conversation back to Spectron with provenance.
+- **Tool pack**: [`agent/tools/`](./agent/tools) exposes `recall`, `remember`, `forget`, `entities`, and `timeline` for explicit use by the model, one static file per tool.
 
 ## Layout
 
 ```
 agent/
-  agent.ts                 # defineAgent — model only; memory is wired by siblings
+  agent.ts                 # defineAgent: model only; memory is wired by siblings
   instructions.md          # base system prompt
   instructions/memory.ts   # pre-turn recall + inject (dynamic instructions)
   hooks/memory.ts          # post-turn write-back (observe-only hook)
@@ -55,7 +55,7 @@ Then ask about it in a brand-new session:
 ```bash
 curl -X POST http://127.0.0.1:3000/eve/v1/session \
   -H 'content-type: application/json' \
-  -d '{"message":"Book me a flight — you know my preferences."}'
+  -d '{"message":"Book me a flight, you know my preferences."}'
 ```
 
 The second session recalls the preferences with no tool call: the auto-memory

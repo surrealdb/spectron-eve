@@ -107,16 +107,19 @@ hook writes new turns back to Spectron tagged with eve provenance
 
 ## Tool pack
 
-To let the model recall and remember explicitly, add one file per tool under
-`agent/tools/`. Eve names each tool after its filename:
+To let the model recall and remember explicitly, add one static file per tool
+under `agent/tools/`. Eve names each tool after its filename:
 
 ```ts
 // agent/tools/recall.ts
 export { recall as default } from "@surrealdb/spectron-eve/tools";
-// agent/tools/remember.ts
-export { remember as default } from "@surrealdb/spectron-eve/tools";
-// forget.ts, entities.ts, timeline.ts likewise
+// agent/tools/remember.ts -> remember, and likewise forget, entities, timeline
 ```
+
+Static per-file tools are the recommended form: they are resolved once and stay
+stable across turns, which keeps the prompt cache warm. (If you would rather
+register all five from one file, a `defineDynamic` resolver returning
+`createMemoryTools()` also works, at the cost of per-session resolution.)
 
 | Tool | What it does |
 | --- | --- |
@@ -157,23 +160,6 @@ A complete, runnable example lives in
 [`examples/memory-assistant`](./examples/memory-assistant): an Eve project for
 an assistant that recalls a user's preferences across sessions, with the tool
 pack and auto-memory middleware wired up and its own run instructions.
-
-## Verifying end-to-end
-
-1. `bun run build && bun run typecheck && bun run test` builds, type-checks, and runs the adapter unit tests (mocked Spectron client).
-2. Against a live Spectron context, scaffold an agent (`bunx eve@latest init my-agent`), copy in the files above, set the env vars, and run `bun run dev`.
-3. Drive a session and confirm cross-session recall:
-   ```bash
-   curl -X POST http://127.0.0.1:3000/eve/v1/session \
-     -H 'content-type: application/json' \
-     -d '{"message":"Remember that I prefer window seats."}'
-   # then, in a new session:
-   curl -X POST http://127.0.0.1:3000/eve/v1/session \
-     -H 'content-type: application/json' \
-     -d '{"message":"Which seat do I like?"}'
-   ```
-   The second session should recall the preference. Inspect provenance with the
-   `timeline` tool or Spectron's retrieval traces.
 
 ## License
 
