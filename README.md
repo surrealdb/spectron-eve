@@ -45,21 +45,15 @@ export default defineAgent({
 // agent/agent.ts is UNCHANGED
 import { defineAgent } from "eve";
 export default defineAgent({ model: "openai/gpt-5.4-mini" });
-```
 
-```ts
 // agent/instructions/memory.ts: recall + inject, automatically
 import { spectronMemoryInstructions } from "@surrealdb/spectron-eve";
 export default spectronMemoryInstructions();
-```
 
-```ts
 // agent/hooks/memory.ts: persist every turn, automatically
 import { spectronMemoryHook } from "@surrealdb/spectron-eve";
 export default spectronMemoryHook();
-```
 
-```ts
 // User (Monday):  "I'm vegetarian and I always book window seats."
 // Agent:          "Got it!"   // persisted to Spectron, scoped to this user
 //
@@ -73,9 +67,9 @@ export default spectronMemoryHook();
 ## Install
 
 ```bash
-pnpm add @surrealdb/spectron-eve
+bun add @surrealdb/spectron-eve
 # peers, already present in an eve project:
-pnpm add eve zod
+bun add eve zod
 ```
 
 Configure the Spectron connection via environment variables (or pass them to
@@ -166,8 +160,8 @@ pack and auto-memory middleware wired up and its own run instructions.
 
 ## Verifying end-to-end
 
-1. `pnpm build && pnpm typecheck && pnpm test` builds, type-checks, and runs the adapter unit tests (mocked Spectron client).
-2. Against a live Spectron context, scaffold an agent (`npx eve@latest init my-agent`), copy in the files above, set the env vars, and run `pnpm dev`.
+1. `bun run build && bun run typecheck && bun run test` builds, type-checks, and runs the adapter unit tests (mocked Spectron client).
+2. Against a live Spectron context, scaffold an agent (`bunx eve@latest init my-agent`), copy in the files above, set the env vars, and run `bun run dev`.
 3. Drive a session and confirm cross-session recall:
    ```bash
    curl -X POST http://127.0.0.1:3000/eve/v1/session \

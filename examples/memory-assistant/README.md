@@ -25,11 +25,11 @@ From the repository root, build the adapter first so the local
 `file:../..` dependency resolves:
 
 ```bash
-pnpm install && pnpm build          # builds @surrealdb/spectron-eve
+bun install && bun run build        # builds @surrealdb/spectron-eve
 cd examples/memory-assistant
-pnpm install                        # links the adapter + eve + zod
+bun install                         # links the adapter + eve + zod
 cp .env.example .env                # fill in your Spectron credentials
-pnpm dev                            # starts the eve dev server
+bun run dev                         # starts the eve dev server
 ```
 
 Set your Spectron connection in `.env`:
