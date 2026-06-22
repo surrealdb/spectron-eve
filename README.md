@@ -1,11 +1,10 @@
 # @surrealdb/spectron-eve
 
-The official [Eve](https://eve.dev) adapter for [Spectron](https://surrealdb.com/platform/spectron): persistent, provenance-tracked memory for Eve agents, backed by SurrealDB's Spectron memory layer.
+The official [Eve](https://eve.dev) adapter for [Spectron](https://surrealdb.com/platform/spectron): persistent, provenance-tracked memory for Eve agents, backed by Spectron's memory layer.
 
 Eve gives agents durable execution and multi-channel reach. Spectron gives them
 **memory**: semantic, episodic, and procedural recall with entity graphs and
-tri-temporal provenance. This adapter wires the two together over Spectron's
-TypeScript SDK.
+tri-temporal provenance.
 
 It ships two layers you can use independently or together:
 
@@ -39,7 +38,7 @@ export default defineAgent({
 // None of that is your actual agent.
 ```
 
-**After** (same agent, plus two files):
+**After**:
 
 ```ts
 // agent/agent.ts is UNCHANGED
