@@ -101,9 +101,10 @@ setSharedSpectronClient(
 
 ## Reference agent
 
-A complete example lives in [`examples/agent`](./examples/agent): an assistant
-that recalls a user's preferences across sessions, with the tool pack and
-auto-memory middleware wired up.
+A complete, runnable example lives in
+[`examples/memory-assistant`](./examples/memory-assistant): an Eve project for
+an assistant that recalls a user's preferences across sessions, with the tool
+pack and auto-memory middleware wired up and its own run instructions.
 
 ## Verifying end-to-end
 

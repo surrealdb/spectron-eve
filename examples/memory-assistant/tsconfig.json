@@ -15,5 +15,5 @@
       "@surrealdb/spectron-eve/tools": ["../../dist/tools/index.d.ts"]
     }
   },
-  "include": ["**/*.ts"]
+  "include": ["agent/**/*.ts"]
 }
