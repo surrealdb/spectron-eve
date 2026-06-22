@@ -41,7 +41,7 @@ export default defineAgent({
 **After**:
 
 ```ts
-// agent/agent.ts is UNCHANGED
+// agent/agent.ts
 import { defineAgent } from "eve";
 export default defineAgent({ model: "openai/gpt-5.4-mini" });
 
