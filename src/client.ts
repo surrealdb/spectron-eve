@@ -2,7 +2,7 @@ import { AgentMemory } from "@surrealdb/memory";
 import { resolveAgentMemoryOptions, type AgentMemoryConnectionConfig } from "./config.js";
 
 /**
- * Creates a AgentMemory client from explicit config and/or environment variables.
+ * Creates an Agent Memory client from explicit config and/or environment variables.
  *
  * @see {@link AgentMemoryConnectionConfig} for the accepted settings.
  */
@@ -13,7 +13,7 @@ export function createAgentMemoryClient(config?: AgentMemoryConnectionConfig): A
 let shared: AgentMemory | undefined;
 
 /**
- * Returns a process-wide shared AgentMemory client, constructed lazily from the
+ * Returns a process-wide shared Agent Memory client, constructed lazily from the
  * environment on first use. The tool pack and auto-memory hooks use this so a
  * single agent process reuses one client (and its retry/idempotency state).
  *

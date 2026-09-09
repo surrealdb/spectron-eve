@@ -6,7 +6,7 @@ import { toolClient, type MemoryToolOptions } from "./shared.js";
 
 /**
  * Builds the `remember` tool: persist a fact to the current user's memory.
- * AgentMemory extracts structured facts from the text; the write is scoped to the
+ * Agent Memory extracts structured facts from the text; the write is scoped to the
  * user and tagged with eve provenance labels.
  */
 export function rememberTool(options?: MemoryToolOptions) {

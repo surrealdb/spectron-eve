@@ -1,8 +1,8 @@
 # @surrealdb/agent-memory-eve
 
-The official [Eve](https://eve.dev) adapter for [AgentMemory](https://surrealdb.com/platform/agentMemory): persistent, provenance-tracked memory for Eve agents, backed by AgentMemory's memory layer.
+The official [Eve](https://eve.dev) adapter for [Agent Memory](https://surrealdb.com/agent-memory): persistent, provenance-tracked memory for Eve agents, backed by Agent Memory's memory layer.
 
-Eve gives agents durable execution and multi-channel reach. AgentMemory gives them
+Eve gives agents durable execution and multi-channel reach. Agent Memory gives them
 **memory**: semantic, episodic, and procedural recall with entity graphs and
 tri-temporal provenance.
 
@@ -46,12 +46,12 @@ import { defineAgent } from "eve";
 export default defineAgent({ model: "openai/gpt-5.4-mini" });
 
 // agent/instructions/memory.ts: recall + inject, automatically
-import { agentMemoryMemoryInstructions } from "@surrealdb/agent-memory-eve";
-export default agentMemoryMemoryInstructions();
+import { agentMemoryInstructions } from "@surrealdb/agent-memory-eve";
+export default agentMemoryInstructions();
 
 // agent/hooks/memory.ts: persist every turn, automatically
-import { agentMemoryMemoryHook } from "@surrealdb/agent-memory-eve";
-export default agentMemoryMemoryHook();
+import { agentMemoryHook } from "@surrealdb/agent-memory-eve";
+export default agentMemoryHook();
 
 // User (Monday):  "I'm vegetarian and I always book window seats."
 // Agent:          "Got it!"   // persisted to AgentMemory, scoped to this user
@@ -71,13 +71,13 @@ bun add @surrealdb/agent-memory-eve
 bun add eve zod
 ```
 
-Configure the AgentMemory connection via environment variables (or pass them to
+Configure the Agent Memory connection via environment variables (or pass them to
 `createAgentMemoryClient`):
 
 ```bash
 AGENT_MEMORY_CONTEXT=your-context-id
 AGENT_MEMORY_API_KEY=sp-...
-AGENT_MEMORY_ENDPOINT=https://your-agentMemory-endpoint
+AGENT_MEMORY_ENDPOINT=https://your-agent-memory-endpoint
 ```
 
 ## Auto-memory (recommended)
@@ -86,19 +86,19 @@ Memory becomes automatic. Add two files to your `agent/` directory:
 
 ```ts
 // agent/instructions/memory.ts: recalls + injects relevant memory each turn
-import { agentMemoryMemoryInstructions } from "@surrealdb/agent-memory-eve";
-export default agentMemoryMemoryInstructions();
+import { agentMemoryInstructions } from "@surrealdb/agent-memory-eve";
+export default agentMemoryInstructions();
 ```
 
 ```ts
 // agent/hooks/memory.ts: persists the conversation back to AgentMemory
-import { agentMemoryMemoryHook } from "@surrealdb/agent-memory-eve";
-export default agentMemoryMemoryHook();
+import { agentMemoryHook } from "@surrealdb/agent-memory-eve";
+export default agentMemoryHook();
 ```
 
 That's it. Each turn, the instructions resolver recalls memory scoped to the
 current user (from `ctx.session.auth`) and lowers it to a system message. The
-hook writes new turns back to AgentMemory tagged with eve provenance
+hook writes new turns back to Agent Memory tagged with eve provenance
 (`eve_session`, `eve_turn`, `eve_agent`, `eve_channel`).
 
 > Eve forbids hooks from injecting model context, which is why recall-and-inject
@@ -135,9 +135,9 @@ across channels**, so a preference learned in Slack is recalled on the web. Tune
 it with `ResolveScopeOptions`:
 
 ```ts
-agentMemoryMemoryInstructions({ scope: { includeChannel: true } }); // per-channel
-agentMemoryMemoryInstructions({ scope: { userKey: "customer" } });  // custom key
-agentMemoryMemoryInstructions({ scope: { resolve: (ctx) => ({ team: "acme" }) } });
+agentMemoryInstructions({ scope: { includeChannel: true } }); // per-channel
+agentMemoryInstructions({ scope: { userKey: "customer" } });  // custom key
+agentMemoryInstructions({ scope: { resolve: (ctx) => ({ team: "acme" }) } });
 ```
 
 The same `scope` option is accepted by every tool factory (`recallTool`,

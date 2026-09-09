@@ -1,11 +1,11 @@
 # Memory assistant: `@surrealdb/agent-memory-eve` example
 
 A complete, runnable [Eve](https://eve.dev) agent that remembers users across
-sessions and channels, powered by [AgentMemory](https://surrealdb.com/platform/agentMemory).
+sessions and channels, powered by [Agent Memory](https://surrealdb.com/agent-memory).
 
 It wires up both layers of the adapter:
 
-- **Auto-memory**: [`agent/instructions/memory.ts`](./agent/instructions/memory.ts) recalls relevant memory each turn and injects it; [`agent/hooks/memory.ts`](./agent/hooks/memory.ts) persists the conversation back to AgentMemory with provenance.
+- **Auto-memory**: [`agent/instructions/memory.ts`](./agent/instructions/memory.ts) recalls relevant memory each turn and injects it; [`agent/hooks/memory.ts`](./agent/hooks/memory.ts) persists the conversation back to Agent Memory with provenance.
 - **Tool pack**: [`agent/tools/`](./agent/tools) exposes `recall`, `remember`, `forget`, `entities`, and `timeline` for explicit use by the model, one static file per tool.
 
 ## Layout
@@ -28,16 +28,16 @@ From the repository root, build the adapter first so the local
 bun install && bun run build        # builds @surrealdb/agent-memory-eve
 cd examples/memory-assistant
 bun install                         # links the adapter + eve + zod
-cp .env.example .env                # fill in your AgentMemory credentials
+cp .env.example .env                # fill in your Agent Memory credentials
 bun run dev                         # starts the eve dev server
 ```
 
-Set your AgentMemory connection in `.env`:
+Set your Agent Memory connection in `.env`:
 
 ```bash
 AGENT_MEMORY_CONTEXT=your-context-id
 AGENT_MEMORY_API_KEY=sp-...
-AGENT_MEMORY_ENDPOINT=https://your-agentMemory-endpoint
+AGENT_MEMORY_ENDPOINT=https://your-agent-memory-endpoint
 ```
 
 ## Try cross-session memory
@@ -61,7 +61,7 @@ curl -X POST http://127.0.0.1:3000/eve/v1/session \
 The second session recalls the preferences with no tool call: the auto-memory
 instructions resolver retrieved them (scoped to the caller) and injected them
 into the prompt. The write from session one carries `eve_session` / `eve_turn`
-provenance labels you can inspect via the `timeline` tool or AgentMemory's
+provenance labels you can inspect via the `timeline` tool or Agent Memory's
 retrieval traces.
 
 > Without authenticated callers, memory is scoped to a shared `anonymous` user.

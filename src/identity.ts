@@ -78,7 +78,7 @@ export function resolveUserId(
 }
 
 /**
- * Maps an eve runtime context to a AgentMemory {@link Scope}. By default a user's
+ * Maps an eve runtime context to an Agent Memory {@link Scope}. By default a user's
  * memory is scoped to `{ user: <principal> }` and unified across channels, so
  * preferences learned in Slack are recalled on the web and vice versa.
  */

@@ -5,7 +5,7 @@ import { toolClient, type MemoryToolOptions } from "./shared.js";
 /**
  * Builds the `forget` tool: erase memory matching a natural-language query.
  *
- * Note: the AgentMemory `/forget` endpoint matches by query across the region the
+ * Note: the Agent Memory `/forget` endpoint matches by query across the region the
  * API key writes to; it is not narrowed by per-call scope. Phrase the query
  * specifically, and gate this tool behind approval in sensitive deployments
  * (`needsApproval` from `eve/tools/approval`).

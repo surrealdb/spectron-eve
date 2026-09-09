@@ -21,19 +21,19 @@ interface WriteBackContext {
  * model having to call a tool. It comes in two halves that mirror eve's own
  * split between context injection and observation:
  *
- * - {@link agentMemoryMemoryInstructions} — a dynamic *instructions* resolver
+ * - {@link agentMemoryInstructions} — a dynamic *instructions* resolver
  *   (`agent/instructions/*.ts`). eve forbids hooks from injecting model
  *   context, so recall-and-inject must run here: each turn it recalls the
  *   user's relevant memories and lowers them to a system message.
- * - {@link agentMemoryMemoryHook} — a *hook* (`agent/hooks/*.ts`) that observes
- *   the durable event stream and writes the conversation back to AgentMemory with
+ * - {@link agentMemoryHook} — a *hook* (`agent/hooks/*.ts`) that observes
+ *   the durable event stream and writes the conversation back to Agent Memory with
  *   provenance after each message.
  *
  * Use them together for fully automatic memory, or either one alone.
  */
 
 export interface AutoMemoryOptions {
-  /** AgentMemory client. Defaults to the shared, env-configured client. */
+  /** Agent Memory client. Defaults to the shared, env-configured client. */
   client?: AgentMemory;
   /** Scope-resolution options controlling the per-user memory scope. */
   scope?: ResolveScopeOptions;
@@ -59,7 +59,7 @@ export interface MemoryHookOptions extends AutoMemoryOptions {
   persist?: { user?: boolean; assistant?: boolean };
 }
 
-/** One recalled memory, mirroring AgentMemory's `MemoryHitJson`. */
+/** One recalled memory, mirroring Agent Memory's `MemoryHitJson`. */
 export interface MemoryHit {
   id: string;
   score: number;
@@ -111,11 +111,11 @@ function latestUserText(messages: readonly { role: string; content: unknown }[])
  *
  * ```ts
  * // agent/instructions/memory.ts
- * import { agentMemoryMemoryInstructions } from "@surrealdb/agent-memory-eve";
- * export default agentMemoryMemoryInstructions();
+ * import { agentMemoryInstructions } from "@surrealdb/agent-memory-eve";
+ * export default agentMemoryInstructions();
  * ```
  */
-export function agentMemoryMemoryInstructions(options: MemoryInstructionsOptions = {}) {
+export function agentMemoryInstructions(options: MemoryInstructionsOptions = {}) {
   const topK = options.topK ?? 8;
   const format = options.format ?? defaultFormat;
   const header = options.header;
@@ -146,17 +146,17 @@ export function agentMemoryMemoryInstructions(options: MemoryInstructionsOptions
 }
 
 /**
- * Builds the hook that persists the conversation to AgentMemory after each
+ * Builds the hook that persists the conversation to Agent Memory after each
  * message, tagged with eve provenance. Export it as the default of a file under
  * `agent/hooks/`:
  *
  * ```ts
  * // agent/hooks/memory.ts
- * import { agentMemoryMemoryHook } from "@surrealdb/agent-memory-eve";
- * export default agentMemoryMemoryHook();
+ * import { agentMemoryHook } from "@surrealdb/agent-memory-eve";
+ * export default agentMemoryHook();
  * ```
  */
-export function agentMemoryMemoryHook(options: MemoryHookOptions = {}): HookDefinition {
+export function agentMemoryHook(options: MemoryHookOptions = {}): HookDefinition {
   const persistUser = options.persist?.user ?? true;
   const persistAssistant = options.persist?.assistant ?? false;
 

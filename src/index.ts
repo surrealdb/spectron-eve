@@ -1,12 +1,12 @@
 /**
- * @surrealdb/agent-memory-eve — the official Eve adapter for AgentMemory.
+ * @surrealdb/agent-memory-eve — the official Eve adapter for Agent Memory.
  *
  * Gives an eve agent persistent, provenance-tracked memory backed by
- * SurrealDB's AgentMemory memory layer, in two layers:
+ * SurrealDB's Agent Memory layer, in two layers:
  *
  * - A tool pack (`@surrealdb/agent-memory-eve/tools`) the model can call.
- * - Auto-memory middleware ({@link agentMemoryMemoryInstructions} +
- *   {@link agentMemoryMemoryHook}) that recalls before a turn and persists after
+ * - Auto-memory middleware ({@link agentMemoryInstructions} +
+ *   {@link agentMemoryHook}) that recalls before a turn and persists after
  *   it, with no tool call required.
  */
 
@@ -41,8 +41,8 @@ export {
 
 // Auto-memory middleware
 export {
-  agentMemoryMemoryInstructions,
-  agentMemoryMemoryHook,
+  agentMemoryInstructions,
+  agentMemoryHook,
   type AutoMemoryOptions,
   type MemoryInstructionsOptions,
   type MemoryHookOptions,

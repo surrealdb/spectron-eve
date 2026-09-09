@@ -1,7 +1,7 @@
 import type { AgentMemoryOptions } from "@surrealdb/memory";
 
 /**
- * Connection settings for the AgentMemory client.
+ * Connection settings for the Agent Memory client.
  *
  * Every field can be supplied explicitly or resolved from the environment:
  * - `context`  ← `AGENT_MEMORY_CONTEXT`
@@ -9,17 +9,17 @@ import type { AgentMemoryOptions } from "@surrealdb/memory";
  * - `endpoint` ← `AGENT_MEMORY_ENDPOINT`
  *
  * On Vercel, set these as project environment variables / secrets. The
- * AgentMemory API key is a static bearer token, so it does not need Vercel
+ * Agent Memory API key is a static bearer token, so it does not need Vercel
  * Connect's interactive OAuth machinery — a plain env var is the simplest
  * path. (For per-tool credential rotation you can still wire a Connect-backed
  * `auth` strategy on the individual tools.)
  */
 export interface AgentMemoryConnectionConfig {
-  /** AgentMemory context id (the memory store this agent reads/writes). */
+  /** Agent Memory context id (the memory store this agent reads/writes). */
   context?: string;
-  /** AgentMemory API key sent as an `Authorization: Bearer` token. */
+  /** Agent Memory API key sent as an `Authorization: Bearer` token. */
   apiKey?: string;
-  /** AgentMemory API origin, without trailing slash. */
+  /** Agent Memory API origin, without trailing slash. */
   endpoint?: string;
   /** Request timeout in milliseconds. Defaults to the SDK default (30s). */
   timeout?: number;
@@ -53,7 +53,7 @@ export function resolveAgentMemoryOptions(
   if (!endpoint) missing.push("endpoint (AGENT_MEMORY_ENDPOINT)");
   if (missing.length > 0) {
     throw new Error(
-      `@surrealdb/agent-memory-eve: missing AgentMemory connection settings: ${missing.join(
+      `@surrealdb/agent-memory-eve: missing Agent Memory connection settings: ${missing.join(
         ", ",
       )}. Set them via the environment or pass them to createAgentMemoryClient().`,
     );

@@ -1,5 +1,5 @@
 /**
- * The AgentMemory tool pack for eve.
+ * The Agent Memory tool pack for eve.
  *
  * Each export is a ready-to-use `defineTool` definition. Expose one in an eve
  * agent by re-exporting it as the default of a file in `agent/tools/`, where
@@ -28,7 +28,7 @@ import { timelineTool } from "./timeline.js";
 import type { MemoryToolOptions } from "./shared.js";
 
 /**
- * Builds the full AgentMemory tool set with shared options (client + scope).
+ * Builds the full Agent Memory tool set with shared options (client + scope).
  * Re-export the entries you want from `agent/tools/*.ts`:
  *
  * ```ts

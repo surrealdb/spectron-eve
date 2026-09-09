@@ -5,8 +5,8 @@ import {
   resolveScope,
   resolveUserId,
   provenanceLabels,
-  agentMemoryMemoryInstructions,
-  agentMemoryMemoryHook,
+  agentMemoryInstructions,
+  agentMemoryHook,
 } from "../dist/index.js";
 import { recallTool, rememberTool } from "../dist/tools/index.js";
 
@@ -118,7 +118,7 @@ test("remember tool writes scoped and provenance-tagged memory", async () => {
 
 test("instructions resolver recalls the latest user message and injects markdown", async () => {
   const client = mockClient();
-  const dynamic = agentMemoryMemoryInstructions({ client }) as {
+  const dynamic = agentMemoryInstructions({ client }) as {
     events: Record<string, (event: unknown, ctx: unknown) => Promise<unknown>>;
   };
   const ctx = {
@@ -145,7 +145,7 @@ test("instructions resolver recalls the latest user message and injects markdown
 
 test("instructions resolver injects nothing when there is no user message", async () => {
   const client = mockClient();
-  const dynamic = agentMemoryMemoryInstructions({ client }) as {
+  const dynamic = agentMemoryInstructions({ client }) as {
     events: Record<string, (event: unknown, ctx: unknown) => Promise<unknown>>;
   };
   const ctx = { ...TOOL_CTX, messages: [{ role: "assistant", content: "Hi" }] };
@@ -156,7 +156,7 @@ test("instructions resolver injects nothing when there is no user message", asyn
 
 test("hook persists user messages with provenance, skips assistant by default", async () => {
   const client = mockClient();
-  const hook = agentMemoryMemoryHook({ client }) as {
+  const hook = agentMemoryHook({ client }) as {
     events: Record<string, (event: unknown, ctx: unknown) => Promise<void>>;
   };
 
@@ -179,7 +179,7 @@ test("hook persists user messages with provenance, skips assistant by default", 
 
 test("hook persists assistant replies when enabled", async () => {
   const client = mockClient();
-  const hook = agentMemoryMemoryHook({ client, persist: { assistant: true } }) as {
+  const hook = agentMemoryHook({ client, persist: { assistant: true } }) as {
     events: Record<string, (event: unknown, ctx: unknown) => Promise<void>>;
   };
   await hook.events["message.completed"]!(

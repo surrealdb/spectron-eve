@@ -2,13 +2,13 @@
  * Provenance tagging.
  *
  * Every memory this adapter writes carries `key=value` labels that link the
- * AgentMemory row back to the eve run that produced it. Combined with AgentMemory's
+ * Agent Memory row back to the eve run that produced it. Combined with Agent Memory's
  * tri-temporal store and retrieval traces, this answers "why did the agent know
  * this?" and ties a recalled fact to a specific eve session/turn in
  * Observability.
  */
 
-/** The eve-side coordinates worth recording on a AgentMemory write. */
+/** The eve-side coordinates worth recording on an Agent Memory write. */
 export interface ProvenanceContextLike {
   readonly session: { readonly id: string };
   readonly agent?: { readonly name?: string };

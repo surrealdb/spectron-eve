@@ -3,9 +3,9 @@
  * the user's latest message (scoped to that user) and lowers it to a system
  * message — so the model "already knows" without calling a tool.
  */
-import { agentMemoryMemoryInstructions } from "@surrealdb/agent-memory-eve";
+import { agentMemoryInstructions } from "@surrealdb/agent-memory-eve";
 
-export default agentMemoryMemoryInstructions({
+export default agentMemoryInstructions({
   topK: 8,
   // Unify memory across channels by default. To scope per channel instead:
   // scope: { includeChannel: true },

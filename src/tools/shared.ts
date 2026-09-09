@@ -9,7 +9,7 @@ import type { ResolveScopeOptions } from "../identity.js";
  * from the environment) and the default per-user scope.
  */
 export interface MemoryToolOptions {
-  /** AgentMemory client to use. Defaults to the shared, env-configured client. */
+  /** Agent Memory client to use. Defaults to the shared, env-configured client. */
   client?: AgentMemory;
   /** Scope-resolution options controlling how the end-user identity is derived. */
   scope?: ResolveScopeOptions;
