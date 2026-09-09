@@ -1,9 +1,9 @@
 {
-  "name": "spectron-eve-memory-assistant",
+  "name": "agentMemory-eve-memory-assistant",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Runnable Eve agent with persistent memory via @surrealdb/spectron-eve.",
+  "description": "Runnable Eve agent with persistent memory via @surrealdb/agent-memory-eve.",
   "scripts": {
     "dev": "eve dev",
     "build": "eve build",
@@ -11,7 +11,7 @@
     "eval": "eve eval"
   },
   "dependencies": {
-    "@surrealdb/spectron-eve": "file:../..",
+    "@surrealdb/agent-memory-eve": "file:../..",
     "eve": "^0.12.2",
     "zod": "^4.4.0"
   }

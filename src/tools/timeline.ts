@@ -1,12 +1,12 @@
 import { defineTool } from "eve/tools";
-import { normaliseScope } from "@surrealdb/spectron";
+import { normaliseScope } from "@surrealdb/memory";
 import { z } from "zod";
 import { resolveScope } from "../identity.js";
 import { toolClient, type MemoryToolOptions } from "./shared.js";
 
 /**
  * Builds the `timeline` tool: tri-temporal recall. Answers "what did we know,
- * and when" by recalling against Spectron with valid-time / as-of bounds — for
+ * and when" by recalling against AgentMemory with valid-time / as-of bounds — for
  * questions like "what was the user's preference last month?".
  */
 export function timelineTool(options?: MemoryToolOptions) {

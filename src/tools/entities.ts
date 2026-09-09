@@ -3,7 +3,7 @@ import { z } from "zod";
 import { toolClient, type MemoryToolOptions } from "./shared.js";
 
 /**
- * Builds the `entities` tool: read Spectron's knowledge graph. With a `type`
+ * Builds the `entities` tool: read AgentMemory's knowledge graph. With a `type`
  * and `name` it returns one entity plus its attributes and relations; with just
  * a `type` (or nothing) it lists entities. Lets the model traverse what the
  * agent knows about people, places, and things rather than only flat facts.

@@ -1,4 +1,4 @@
-import type { Scope } from "@surrealdb/spectron";
+import type { Scope } from "@surrealdb/memory";
 
 /**
  * Auth metadata as exposed on the active Eve session. Mirrors `eve`'s
@@ -78,7 +78,7 @@ export function resolveUserId(
 }
 
 /**
- * Maps an eve runtime context to a Spectron {@link Scope}. By default a user's
+ * Maps an eve runtime context to a AgentMemory {@link Scope}. By default a user's
  * memory is scoped to `{ user: <principal> }` and unified across channels, so
  * preferences learned in Slack are recalled on the web and vice versa.
  */
@@ -89,13 +89,11 @@ export function resolveScope(
   if (options.resolve) return options.resolve(ctx);
 
   const userKey = options.userKey ?? "user";
-  const scope: Record<string, string> = {
-    [userKey]: resolveUserId(ctx, options),
-  };
+  const scope: string[] = [`${userKey}/${resolveUserId(ctx, options)}`];
 
   const channelKind = ctx.channel?.kind;
   if (options.includeChannel && channelKind) {
-    scope.channel = channelKind;
+    scope.push(`channel/${channelKind}`);
   }
   return scope;
 }

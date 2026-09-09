@@ -1,1 +1,1 @@
-export { timeline as default } from "@surrealdb/spectron-eve/tools";
+export { timeline as default } from "@surrealdb/agent-memory-eve/tools";

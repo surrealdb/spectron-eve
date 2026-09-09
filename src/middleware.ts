@@ -1,13 +1,13 @@
 import { defineDynamic, defineInstructions } from "eve/instructions";
 import { defineHook, type HookDefinition } from "eve/hooks";
-import { normaliseScope } from "@surrealdb/spectron";
+import { normaliseScope } from "@surrealdb/memory";
 import {
   resolveScope,
   type ResolveScopeOptions,
   type SessionAuthLike,
 } from "./identity.js";
 import { provenanceLabels } from "./provenance.js";
-import { getSharedSpectronClient, type Spectron } from "./client.js";
+import { getSharedAgentMemoryClient, type AgentMemory } from "./client.js";
 
 /** The runtime context fields the write-back path reads. eve's `HookContext` satisfies it. */
 interface WriteBackContext {
@@ -21,20 +21,20 @@ interface WriteBackContext {
  * model having to call a tool. It comes in two halves that mirror eve's own
  * split between context injection and observation:
  *
- * - {@link spectronMemoryInstructions} — a dynamic *instructions* resolver
+ * - {@link agentMemoryMemoryInstructions} — a dynamic *instructions* resolver
  *   (`agent/instructions/*.ts`). eve forbids hooks from injecting model
  *   context, so recall-and-inject must run here: each turn it recalls the
  *   user's relevant memories and lowers them to a system message.
- * - {@link spectronMemoryHook} — a *hook* (`agent/hooks/*.ts`) that observes
- *   the durable event stream and writes the conversation back to Spectron with
+ * - {@link agentMemoryMemoryHook} — a *hook* (`agent/hooks/*.ts`) that observes
+ *   the durable event stream and writes the conversation back to AgentMemory with
  *   provenance after each message.
  *
  * Use them together for fully automatic memory, or either one alone.
  */
 
 export interface AutoMemoryOptions {
-  /** Spectron client. Defaults to the shared, env-configured client. */
-  client?: Spectron;
+  /** AgentMemory client. Defaults to the shared, env-configured client. */
+  client?: AgentMemory;
   /** Scope-resolution options controlling the per-user memory scope. */
   scope?: ResolveScopeOptions;
 }
@@ -59,7 +59,7 @@ export interface MemoryHookOptions extends AutoMemoryOptions {
   persist?: { user?: boolean; assistant?: boolean };
 }
 
-/** One recalled memory, mirroring Spectron's `MemoryHitJson`. */
+/** One recalled memory, mirroring AgentMemory's `MemoryHitJson`. */
 export interface MemoryHit {
   id: string;
   score: number;
@@ -111,11 +111,11 @@ function latestUserText(messages: readonly { role: string; content: unknown }[])
  *
  * ```ts
  * // agent/instructions/memory.ts
- * import { spectronMemoryInstructions } from "@surrealdb/spectron-eve";
- * export default spectronMemoryInstructions();
+ * import { agentMemoryMemoryInstructions } from "@surrealdb/agent-memory-eve";
+ * export default agentMemoryMemoryInstructions();
  * ```
  */
-export function spectronMemoryInstructions(options: MemoryInstructionsOptions = {}) {
+export function agentMemoryMemoryInstructions(options: MemoryInstructionsOptions = {}) {
   const topK = options.topK ?? 8;
   const format = options.format ?? defaultFormat;
   const header = options.header;
@@ -126,7 +126,7 @@ export function spectronMemoryInstructions(options: MemoryInstructionsOptions = 
         const query = latestUserText(ctx.messages);
         if (!query) return null;
         try {
-          const client = options.client ?? getSharedSpectronClient();
+          const client = options.client ?? getSharedAgentMemoryClient();
           const lens = normaliseScope(resolveScope(ctx, options.scope));
           const result = await client.recall(query, { k: topK, lens, source: "eve" });
           const hits = (result.hits ?? []) as MemoryHit[];
@@ -137,7 +137,7 @@ export function spectronMemoryInstructions(options: MemoryInstructionsOptions = 
           return defineInstructions({ markdown });
         } catch (error) {
           // Memory is best-effort: never fail a turn because recall failed.
-          console.warn("[spectron-eve] recall for injection failed:", error);
+          console.warn("[agentMemory-eve] recall for injection failed:", error);
           return null;
         }
       },
@@ -146,17 +146,17 @@ export function spectronMemoryInstructions(options: MemoryInstructionsOptions = 
 }
 
 /**
- * Builds the hook that persists the conversation to Spectron after each
+ * Builds the hook that persists the conversation to AgentMemory after each
  * message, tagged with eve provenance. Export it as the default of a file under
  * `agent/hooks/`:
  *
  * ```ts
  * // agent/hooks/memory.ts
- * import { spectronMemoryHook } from "@surrealdb/spectron-eve";
- * export default spectronMemoryHook();
+ * import { agentMemoryMemoryHook } from "@surrealdb/agent-memory-eve";
+ * export default agentMemoryMemoryHook();
  * ```
  */
-export function spectronMemoryHook(options: MemoryHookOptions = {}): HookDefinition {
+export function agentMemoryMemoryHook(options: MemoryHookOptions = {}): HookDefinition {
   const persistUser = options.persist?.user ?? true;
   const persistAssistant = options.persist?.assistant ?? false;
 
@@ -169,14 +169,14 @@ export function spectronMemoryHook(options: MemoryHookOptions = {}): HookDefinit
     const trimmed = text.trim();
     if (!trimmed) return;
     try {
-      const client = options.client ?? getSharedSpectronClient();
+      const client = options.client ?? getSharedAgentMemoryClient();
       await client.remember(trimmed, {
-        scope: resolveScope(ctx, options.scope),
+        scopes: resolveScope(ctx, options.scope),
         role,
         labels: provenanceLabels(ctx, turnId),
       });
     } catch (error) {
-      console.warn(`[spectron-eve] persisting ${role} memory failed:`, error);
+      console.warn(`[agentMemory-eve] persisting ${role} memory failed:`, error);
     }
   }
 

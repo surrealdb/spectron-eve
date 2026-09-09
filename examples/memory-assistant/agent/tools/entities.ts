@@ -1,1 +1,1 @@
-export { entities as default } from "@surrealdb/spectron-eve/tools";
+export { entities as default } from "@surrealdb/agent-memory-eve/tools";

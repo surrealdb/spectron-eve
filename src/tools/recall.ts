@@ -1,5 +1,5 @@
 import { defineTool } from "eve/tools";
-import { normaliseScope } from "@surrealdb/spectron";
+import { normaliseScope } from "@surrealdb/memory";
 import { z } from "zod";
 import { resolveScope } from "../identity.js";
 import { toolClient, type MemoryToolOptions } from "./shared.js";

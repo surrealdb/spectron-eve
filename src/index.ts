@@ -1,25 +1,25 @@
 /**
- * @surrealdb/spectron-eve — the official Eve adapter for Spectron.
+ * @surrealdb/agent-memory-eve — the official Eve adapter for AgentMemory.
  *
  * Gives an eve agent persistent, provenance-tracked memory backed by
- * SurrealDB's Spectron memory layer, in two layers:
+ * SurrealDB's AgentMemory memory layer, in two layers:
  *
- * - A tool pack (`@surrealdb/spectron-eve/tools`) the model can call.
- * - Auto-memory middleware ({@link spectronMemoryInstructions} +
- *   {@link spectronMemoryHook}) that recalls before a turn and persists after
+ * - A tool pack (`@surrealdb/agent-memory-eve/tools`) the model can call.
+ * - Auto-memory middleware ({@link agentMemoryMemoryInstructions} +
+ *   {@link agentMemoryMemoryHook}) that recalls before a turn and persists after
  *   it, with no tool call required.
  */
 
 // Client + configuration
 export {
-  createSpectronClient,
-  getSharedSpectronClient,
-  setSharedSpectronClient,
-  Spectron,
+  createAgentMemoryClient,
+  getSharedAgentMemoryClient,
+  setSharedAgentMemoryClient,
+  AgentMemory,
 } from "./client.js";
 export {
-  resolveSpectronOptions,
-  type SpectronConnectionConfig,
+  resolveAgentMemoryOptions,
+  type AgentMemoryConnectionConfig,
 } from "./config.js";
 
 // Identity / scope
@@ -41,8 +41,8 @@ export {
 
 // Auto-memory middleware
 export {
-  spectronMemoryInstructions,
-  spectronMemoryHook,
+  agentMemoryMemoryInstructions,
+  agentMemoryMemoryHook,
   type AutoMemoryOptions,
   type MemoryInstructionsOptions,
   type MemoryHookOptions,

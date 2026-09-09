@@ -1,15 +1,15 @@
 {
-  "name": "@surrealdb/spectron-eve",
-  "version": "0.1.0",
-  "description": "Official Eve adapter for Spectron — persistent, provenance-tracked memory for Eve agents, backed by SurrealDB's Spectron memory layer.",
+  "name": "@surrealdb/agent-memory-eve",
+  "version": "0.2.0",
+  "description": "Official Eve adapter for AgentMemory — persistent, provenance-tracked memory for Eve agents, backed by SurrealDB's AgentMemory memory layer.",
   "license": "Apache-2.0",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/surrealdb-dev/spectron-eve.git"
+    "url": "git+https://github.com/surrealdb-dev/agentMemory-eve.git"
   },
   "keywords": [
-    "spectron",
+    "agentMemory",
     "surrealdb",
     "eve",
     "agent",
@@ -37,7 +37,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@surrealdb/spectron": "^1.0.0-alpha.1"
+    "@surrealdb/memory": "^1.0.0-alpha.9"
   },
   "peerDependencies": {
     "eve": ">=0.12.0",

@@ -1,5 +1,5 @@
 /**
- * The Spectron tool pack for eve.
+ * The AgentMemory tool pack for eve.
  *
  * Each export is a ready-to-use `defineTool` definition. Expose one in an eve
  * agent by re-exporting it as the default of a file in `agent/tools/`, where
@@ -7,7 +7,7 @@
  *
  * ```ts
  * // agent/tools/recall.ts
- * export { recall as default } from "@surrealdb/spectron-eve/tools";
+ * export { recall as default } from "@surrealdb/agent-memory-eve/tools";
  * ```
  *
  * For custom configuration (a specific client, or a non-default user scope),
@@ -28,13 +28,13 @@ import { timelineTool } from "./timeline.js";
 import type { MemoryToolOptions } from "./shared.js";
 
 /**
- * Builds the full Spectron tool set with shared options (client + scope).
+ * Builds the full AgentMemory tool set with shared options (client + scope).
  * Re-export the entries you want from `agent/tools/*.ts`:
  *
  * ```ts
  * // agent/tools/memory.ts is NOT how eve names tools — one file per tool:
  * // agent/tools/recall.ts
- * import { createMemoryTools } from "@surrealdb/spectron-eve/tools";
+ * import { createMemoryTools } from "@surrealdb/agent-memory-eve/tools";
  * export default createMemoryTools({ scope: { includeChannel: true } }).recall;
  * ```
  */
