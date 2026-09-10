@@ -11,8 +11,8 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "@surrealdb/spectron-eve": ["../../dist/index.d.ts"],
-      "@surrealdb/spectron-eve/tools": ["../../dist/tools/index.d.ts"]
+      "@surrealdb/agent-memory-eve": ["../../dist/index.d.ts"],
+      "@surrealdb/agent-memory-eve/tools": ["../../dist/tools/index.d.ts"]
     }
   },
   "include": ["agent/**/*.ts"]

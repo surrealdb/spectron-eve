@@ -1,1 +1,1 @@
-export { remember as default } from "@surrealdb/spectron-eve/tools";
+export { remember as default } from "@surrealdb/agent-memory-eve/tools";

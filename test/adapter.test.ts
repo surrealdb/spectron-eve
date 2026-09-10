@@ -5,8 +5,8 @@ import {
   resolveScope,
   resolveUserId,
   provenanceLabels,
-  spectronMemoryInstructions,
-  spectronMemoryHook,
+  agentMemoryInstructions,
+  agentMemoryHook,
 } from "../dist/index.js";
 import { recallTool, rememberTool } from "../dist/tools/index.js";
 
@@ -33,7 +33,7 @@ function mockClient() {
     },
   };
   // Cast through unknown: the adapter only touches the methods above.
-  return client as unknown as import("../dist/index.js").Spectron & {
+  return client as unknown as import("../dist/index.js").AgentMemory & {
     calls: typeof calls;
   };
 }
@@ -56,20 +56,20 @@ const HOOK_CTX = {
 };
 
 test("resolveScope maps the authenticated principal to a user scope", () => {
-  assert.deepEqual(resolveScope(TOOL_CTX as never), { user: "user-abc" });
+  assert.deepEqual(resolveScope(TOOL_CTX as never), ["user/user-abc"]);
   assert.equal(resolveUserId(TOOL_CTX as never), "user-abc");
 });
 
 test("resolveScope falls back to anonymous when unauthenticated", () => {
   const ctx = { session: { id: "s", auth: { current: null, initiator: null } } };
-  assert.deepEqual(resolveScope(ctx as never), { user: "anonymous" });
+  assert.deepEqual(resolveScope(ctx as never), ["user/anonymous"]);
 });
 
 test("resolveScope can narrow by channel when asked", () => {
-  assert.deepEqual(resolveScope(HOOK_CTX as never, { includeChannel: true }), {
-    user: "user-abc",
-    channel: "slack",
-  });
+  assert.deepEqual(resolveScope(HOOK_CTX as never, { includeChannel: true }), [
+    "user/user-abc",
+    "channel/slack",
+  ]);
 });
 
 test("provenance labels link a write back to the eve run", () => {
@@ -90,7 +90,7 @@ test("recall tool scopes the read by lens and tags the source", async () => {
   assert.ok(call, "recall was called");
   const [query, options] = call.args as [string, Record<string, unknown>];
   assert.equal(query, "what theme?");
-  assert.deepEqual(options.lens, ["user/user-abc"]);
+  assert.deepEqual(options.lens, [["user/user-abc"]]);
   assert.equal(options.source, "eve");
   assert.equal((result as { hits: unknown[] }).hits.length, 2);
 });
@@ -107,7 +107,7 @@ test("remember tool writes scoped and provenance-tagged memory", async () => {
   assert.ok(call);
   const [text, options] = call.args as [string, Record<string, unknown>];
   assert.equal(text, "User loves espresso");
-  assert.deepEqual(options.scope, { user: "user-abc" });
+  assert.deepEqual(options.scopes, ["user/user-abc"]);
   assert.equal(options.role, "user");
   assert.deepEqual(options.labels, [
     "eve_session=sess_123",
@@ -118,7 +118,7 @@ test("remember tool writes scoped and provenance-tagged memory", async () => {
 
 test("instructions resolver recalls the latest user message and injects markdown", async () => {
   const client = mockClient();
-  const dynamic = spectronMemoryInstructions({ client }) as {
+  const dynamic = agentMemoryInstructions({ client }) as {
     events: Record<string, (event: unknown, ctx: unknown) => Promise<unknown>>;
   };
   const ctx = {
@@ -145,7 +145,7 @@ test("instructions resolver recalls the latest user message and injects markdown
 
 test("instructions resolver injects nothing when there is no user message", async () => {
   const client = mockClient();
-  const dynamic = spectronMemoryInstructions({ client }) as {
+  const dynamic = agentMemoryInstructions({ client }) as {
     events: Record<string, (event: unknown, ctx: unknown) => Promise<unknown>>;
   };
   const ctx = { ...TOOL_CTX, messages: [{ role: "assistant", content: "Hi" }] };
@@ -156,7 +156,7 @@ test("instructions resolver injects nothing when there is no user message", asyn
 
 test("hook persists user messages with provenance, skips assistant by default", async () => {
   const client = mockClient();
-  const hook = spectronMemoryHook({ client }) as {
+  const hook = agentMemoryHook({ client }) as {
     events: Record<string, (event: unknown, ctx: unknown) => Promise<void>>;
   };
 
@@ -174,12 +174,12 @@ test("hook persists user messages with provenance, skips assistant by default", 
   const [text, options] = writes[0]!.args as [string, Record<string, unknown>];
   assert.equal(text, "Remember I like espresso");
   assert.equal(options.role, "user");
-  assert.deepEqual(options.scope, { user: "user-abc" });
+  assert.deepEqual(options.scopes, ["user/user-abc"]);
 });
 
 test("hook persists assistant replies when enabled", async () => {
   const client = mockClient();
-  const hook = spectronMemoryHook({ client, persist: { assistant: true } }) as {
+  const hook = agentMemoryHook({ client, persist: { assistant: true } }) as {
     events: Record<string, (event: unknown, ctx: unknown) => Promise<void>>;
   };
   await hook.events["message.completed"]!(

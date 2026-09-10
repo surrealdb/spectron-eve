@@ -1,1 +1,1 @@
-export { recall as default } from "@surrealdb/spectron-eve/tools";
+export { recall as default } from "@surrealdb/agent-memory-eve/tools";

@@ -6,7 +6,7 @@ import { toolClient, type MemoryToolOptions } from "./shared.js";
 
 /**
  * Builds the `remember` tool: persist a fact to the current user's memory.
- * Spectron extracts structured facts from the text; the write is scoped to the
+ * Agent Memory extracts structured facts from the text; the write is scoped to the
  * user and tagged with eve provenance labels.
  */
 export function rememberTool(options?: MemoryToolOptions) {
@@ -30,7 +30,7 @@ export function rememberTool(options?: MemoryToolOptions) {
         ...(input.labels ?? []),
       ];
       const result = await client.remember(input.text, {
-        scope,
+        scopes: scope,
         role: "user",
         labels,
       });

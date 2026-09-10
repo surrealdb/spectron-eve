@@ -1,8 +1,8 @@
-# @surrealdb/spectron-eve
+# @surrealdb/agent-memory-eve
 
-The official [Eve](https://eve.dev) adapter for [Spectron](https://surrealdb.com/platform/spectron): persistent, provenance-tracked memory for Eve agents, backed by Spectron's memory layer.
+The official [Eve](https://eve.dev) adapter for [Agent Memory](https://surrealdb.com/agent-memory): persistent, provenance-tracked memory for Eve agents, backed by Agent Memory's memory layer.
 
-Eve gives agents durable execution and multi-channel reach. Spectron gives them
+Eve gives agents durable execution and multi-channel reach. Agent Memory gives them
 **memory**: semantic, episodic, and procedural recall with entity graphs and
 tri-temporal provenance.
 
@@ -46,15 +46,15 @@ import { defineAgent } from "eve";
 export default defineAgent({ model: "openai/gpt-5.4-mini" });
 
 // agent/instructions/memory.ts: recall + inject, automatically
-import { spectronMemoryInstructions } from "@surrealdb/spectron-eve";
-export default spectronMemoryInstructions();
+import { agentMemoryInstructions } from "@surrealdb/agent-memory-eve";
+export default agentMemoryInstructions();
 
 // agent/hooks/memory.ts: persist every turn, automatically
-import { spectronMemoryHook } from "@surrealdb/spectron-eve";
-export default spectronMemoryHook();
+import { agentMemoryHook } from "@surrealdb/agent-memory-eve";
+export default agentMemoryHook();
 
 // User (Monday):  "I'm vegetarian and I always book window seats."
-// Agent:          "Got it!"   // persisted to Spectron, scoped to this user
+// Agent:          "Got it!"   // persisted to AgentMemory, scoped to this user
 //
 // User (Tuesday, brand-new session, even a different channel):
 //                 "Book me a flight."
@@ -66,18 +66,18 @@ export default spectronMemoryHook();
 ## Install
 
 ```bash
-bun add @surrealdb/spectron-eve
+bun add @surrealdb/agent-memory-eve
 # peers, already present in an eve project:
 bun add eve zod
 ```
 
-Configure the Spectron connection via environment variables (or pass them to
-`createSpectronClient`):
+Configure the Agent Memory connection via environment variables (or pass them to
+`createAgentMemoryClient`):
 
 ```bash
-SPECTRON_CONTEXT=your-context-id
-SPECTRON_API_KEY=sp-...
-SPECTRON_ENDPOINT=https://your-spectron-endpoint
+AGENT_MEMORY_CONTEXT=your-context-id
+AGENT_MEMORY_API_KEY=sp-...
+AGENT_MEMORY_ENDPOINT=https://your-agent-memory-endpoint
 ```
 
 ## Auto-memory (recommended)
@@ -86,19 +86,19 @@ Memory becomes automatic. Add two files to your `agent/` directory:
 
 ```ts
 // agent/instructions/memory.ts: recalls + injects relevant memory each turn
-import { spectronMemoryInstructions } from "@surrealdb/spectron-eve";
-export default spectronMemoryInstructions();
+import { agentMemoryInstructions } from "@surrealdb/agent-memory-eve";
+export default agentMemoryInstructions();
 ```
 
 ```ts
-// agent/hooks/memory.ts: persists the conversation back to Spectron
-import { spectronMemoryHook } from "@surrealdb/spectron-eve";
-export default spectronMemoryHook();
+// agent/hooks/memory.ts: persists the conversation back to AgentMemory
+import { agentMemoryHook } from "@surrealdb/agent-memory-eve";
+export default agentMemoryHook();
 ```
 
 That's it. Each turn, the instructions resolver recalls memory scoped to the
 current user (from `ctx.session.auth`) and lowers it to a system message. The
-hook writes new turns back to Spectron tagged with eve provenance
+hook writes new turns back to Agent Memory tagged with eve provenance
 (`eve_session`, `eve_turn`, `eve_agent`, `eve_channel`).
 
 > Eve forbids hooks from injecting model context, which is why recall-and-inject
@@ -111,7 +111,7 @@ under `agent/tools/`. Eve names each tool after its filename:
 
 ```ts
 // agent/tools/recall.ts
-export { recall as default } from "@surrealdb/spectron-eve/tools";
+export { recall as default } from "@surrealdb/agent-memory-eve/tools";
 // agent/tools/remember.ts -> remember, and likewise forget, entities, timeline
 ```
 
@@ -135,9 +135,9 @@ across channels**, so a preference learned in Slack is recalled on the web. Tune
 it with `ResolveScopeOptions`:
 
 ```ts
-spectronMemoryInstructions({ scope: { includeChannel: true } }); // per-channel
-spectronMemoryInstructions({ scope: { userKey: "customer" } });  // custom key
-spectronMemoryInstructions({ scope: { resolve: (ctx) => ({ team: "acme" }) } });
+agentMemoryInstructions({ scope: { includeChannel: true } }); // per-channel
+agentMemoryInstructions({ scope: { userKey: "customer" } });  // custom key
+agentMemoryInstructions({ scope: { resolve: (ctx) => ({ team: "acme" }) } });
 ```
 
 The same `scope` option is accepted by every tool factory (`recallTool`,
@@ -146,10 +146,10 @@ The same `scope` option is accepted by every tool factory (`recallTool`,
 ## Custom client
 
 ```ts
-import { createSpectronClient, setSharedSpectronClient } from "@surrealdb/spectron-eve";
+import { createAgentMemoryClient, setSharedAgentMemoryClient } from "@surrealdb/agent-memory-eve";
 
-setSharedSpectronClient(
-  createSpectronClient({ context: "support", endpoint: "https://...", apiKey: "sp-..." }),
+setSharedAgentMemoryClient(
+  createAgentMemoryClient({ context: "support", endpoint: "https://...", apiKey: "sp-..." }),
 );
 ```
 

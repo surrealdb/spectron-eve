@@ -1,28 +1,28 @@
-import { Spectron } from "@surrealdb/spectron";
-import { resolveSpectronOptions, type SpectronConnectionConfig } from "./config.js";
+import { AgentMemory } from "@surrealdb/memory";
+import { resolveAgentMemoryOptions, type AgentMemoryConnectionConfig } from "./config.js";
 
 /**
- * Creates a Spectron client from explicit config and/or environment variables.
+ * Creates an Agent Memory client from explicit config and/or environment variables.
  *
- * @see {@link SpectronConnectionConfig} for the accepted settings.
+ * @see {@link AgentMemoryConnectionConfig} for the accepted settings.
  */
-export function createSpectronClient(config?: SpectronConnectionConfig): Spectron {
-  return new Spectron(resolveSpectronOptions(config));
+export function createAgentMemoryClient(config?: AgentMemoryConnectionConfig): AgentMemory {
+  return new AgentMemory(resolveAgentMemoryOptions(config));
 }
 
-let shared: Spectron | undefined;
+let shared: AgentMemory | undefined;
 
 /**
- * Returns a process-wide shared Spectron client, constructed lazily from the
+ * Returns a process-wide shared Agent Memory client, constructed lazily from the
  * environment on first use. The tool pack and auto-memory hooks use this so a
  * single agent process reuses one client (and its retry/idempotency state).
  *
- * Prefer {@link createSpectronClient} when you need an explicitly-configured
+ * Prefer {@link createAgentMemoryClient} when you need an explicitly-configured
  * client (e.g. a second context, or per-request overrides).
  */
-export function getSharedSpectronClient(): Spectron {
+export function getSharedAgentMemoryClient(): AgentMemory {
   if (!shared) {
-    shared = createSpectronClient();
+    shared = createAgentMemoryClient();
   }
   return shared;
 }
@@ -32,8 +32,8 @@ export function getSharedSpectronClient(): Spectron {
  * built with a mock `fetchImpl`) and for advanced setups that configure the
  * client once at startup.
  */
-export function setSharedSpectronClient(client: Spectron): void {
+export function setSharedAgentMemoryClient(client: AgentMemory): void {
   shared = client;
 }
 
-export { Spectron };
+export { AgentMemory };

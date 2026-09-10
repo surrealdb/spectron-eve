@@ -1,5 +1,5 @@
-import type { Spectron } from "@surrealdb/spectron";
-import { getSharedSpectronClient } from "../client.js";
+import type { AgentMemory } from "@surrealdb/memory";
+import { getSharedAgentMemoryClient } from "../client.js";
 import type { ResolveScopeOptions } from "../identity.js";
 
 /**
@@ -9,8 +9,8 @@ import type { ResolveScopeOptions } from "../identity.js";
  * from the environment) and the default per-user scope.
  */
 export interface MemoryToolOptions {
-  /** Spectron client to use. Defaults to the shared, env-configured client. */
-  client?: Spectron;
+  /** Agent Memory client to use. Defaults to the shared, env-configured client. */
+  client?: AgentMemory;
   /** Scope-resolution options controlling how the end-user identity is derived. */
   scope?: ResolveScopeOptions;
 }
@@ -21,6 +21,6 @@ export interface MemoryToolOptions {
  * constructs a client — and therefore never throws on missing env vars before
  * the agent actually runs.
  */
-export function toolClient(options: MemoryToolOptions | undefined): Spectron {
-  return options?.client ?? getSharedSpectronClient();
+export function toolClient(options: MemoryToolOptions | undefined): AgentMemory {
+  return options?.client ?? getSharedAgentMemoryClient();
 }
